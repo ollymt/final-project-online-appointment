@@ -90,7 +90,7 @@ export function AppointmentProvider({ children }) {
 
     const getVisible = () => {
         if (!user) return [];
-        if (user.role === 'doctor') return appointments;
+        if (user.role === 'doctor') return appointments.filter(a => a.doctorId === user.id);
         return appointments.filter(a => a.patientId === user.id);
     };
 
@@ -149,7 +149,6 @@ export function AppointmentProvider({ children }) {
             const appt = appointments.find(a => a.id === id);
             if (!appt) return { success: false, error: 'Not found.' };
 
-            // Keep your 24h rule for patients
             if (user?.role !== 'doctor') {
                 const apptDate = new Date(`${appt.date}T${appt.time}`);
                 const hoursUntil = (apptDate - new Date()) / (1000 * 60 * 60);
@@ -158,15 +157,11 @@ export function AppointmentProvider({ children }) {
                 }
             }
 
-            // SOFT DELETE: Change status instead of filtering out
-            const updated = appointments.map(a =>
-                a.id === id ? { ...a, status: 'cancelled' } : a
-            );
-
+            const updated = appointments.filter(a => a.id !== id);
             await save(updated);
             return { success: true };
         } catch {
-            return { success: false, error: 'Failed to cancel appointment.' };
+            return { success: false, error: 'Failed to delete appointment.' };
         }
     };
 
