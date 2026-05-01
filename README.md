@@ -11,6 +11,7 @@ A cross-platform mobile app (React Native + Expo) for scheduling and managing de
 | Login / Register | ✅ | ✅ (seeded only) |
 | View Appointments | ✅ | ✅ |
 | Book Appointment | ✅ | ✅ |
+| Confirm Appointment | ❌ | ✅ |
 | Cancel / Edit | ✅ | ✅ |
 | Home Dashboard | ✅ | ✅ |
 | Dark Mode | ✅ | ✅ |
