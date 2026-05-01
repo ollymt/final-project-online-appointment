@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View, Text, ScrollView, TouchableOpacity,
+    View, Text, ScrollView, Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,7 +31,7 @@ function UpcomingBanner({ appointment, onPress, theme }) {
     const displayTime = `${dh}:${min} ${ampm}`;
 
     return (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+        <Pressable onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}>
             <View style={{
                 borderRadius: 20,
                 overflow: 'hidden',
@@ -83,7 +83,7 @@ function UpcomingBanner({ appointment, onPress, theme }) {
                     </View>
                 </View>
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 
@@ -155,21 +155,30 @@ export default function HomeScreen({ navigation }) {
                     <UpcomingBanner
                         appointment={nextAppt}
                         theme={theme}
-                        onPress={() => navigation.navigate('Appointments')}
+                        onPress={() => navigation.navigate('AppointmentDetail', { appointmentId: nextAppt.id })}
                     />
                 )}
 
                 {/* Doctor upcoming */}
                 {isDoctor && nextAppt && (
-                    <Card style={{ marginBottom: 20, backgroundColor: theme.primaryDark, borderColor: theme.primary }}>
-                        <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 6 }}>
-                            Next Appointment
-                        </Text>
-                        <Text style={{ color: '#fff', fontSize: 17, fontWeight: '800' }}>{nextAppt.service}</Text>
-                        <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginTop: 2 }}>
-                            Patient: {nextAppt.patientName} · {format(parseISO(nextAppt.date), 'MMM d')} at {nextAppt.time}
-                        </Text>
-                    </Card>
+                    <Pressable
+                        onPress={() => navigation.navigate('AppointmentDetail', { appointmentId: nextAppt.id })}
+                        style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}
+                    >
+                        <Card style={{ marginBottom: 20, backgroundColor: theme.primaryDark, borderColor: theme.primary }}>
+                            <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 6 }}>
+                                Next Appointment
+                            </Text>
+                            <Text style={{ color: '#fff', fontSize: 17, fontWeight: '800' }}>{nextAppt.service}</Text>
+                            <Text style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginTop: 2 }}>
+                                Patient: {nextAppt.patientName} · {format(parseISO(nextAppt.date), 'MMM d')} at {nextAppt.time}
+                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                                <Text style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>Tap to view details</Text>
+                                <Ionicons name="chevron-forward" size={13} color="rgba(255,255,255,0.5)" style={{ marginLeft: 4 }} />
+                            </View>
+                        </Card>
+                    </Pressable>
                 )}
 
                 {/* Stats */}

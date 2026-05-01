@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-    View, Text, ScrollView, TouchableOpacity,
+    View, Text, ScrollView, Pressable,
     KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -147,9 +147,9 @@ export function LoginScreen({ navigation }) {
                             error={errors.password}
                             success={touched.password && !errors.password && password.length > 0}
                             rightElement={
-                                <TouchableOpacity onPress={() => setShowPw(p => !p)} style={{ padding: 4 }}>
+                                <Pressable onPress={() => setShowPw(p => !p)} style={({ pressed }) => ({ padding: 4, opacity: pressed ? 0.6 : 1 })}>
                                     <Ionicons name={showPw ? 'eye-off-outline' : 'eye-outline'} size={20} color={theme.textMuted} />
-                                </TouchableOpacity>
+                                </Pressable>
                             }
                         />
 
@@ -164,23 +164,27 @@ export function LoginScreen({ navigation }) {
                                 { role: 'doctor', icon: 'person-circle-outline', color: theme.primary, label: 'Doctor', sub: 'dr.santos@clinic.com' },
                                 { role: 'patient', icon: 'person-outline', color: theme.accent, label: 'Patient', sub: 'ana@email.com' },
                             ].map(d => (
-                                <TouchableOpacity
+                                <Pressable
                                     key={d.role} onPress={() => fillDemo(d.role)}
-                                    style={{ flex: 1, backgroundColor: theme.bgCard, borderRadius: 12, padding: 12, alignItems: 'center', borderWidth: 1, borderColor: theme.border }}
+                                    style={({ pressed }) => ({
+                                        flex: 1, backgroundColor: theme.bgCard, borderRadius: 12,
+                                        padding: 12, alignItems: 'center', borderWidth: 1,
+                                        borderColor: theme.border, opacity: pressed ? 0.7 : 1,
+                                    })}
                                 >
                                     <Ionicons name={d.icon} size={22} color={d.color} />
                                     <Text style={{ color: theme.text, fontWeight: '700', fontSize: 12, marginTop: 4 }}>{d.label}</Text>
                                     <Text style={{ color: theme.textMuted, fontSize: 10 }}>{d.sub}</Text>
-                                </TouchableOpacity>
+                                </Pressable>
                             ))}
                         </View>
                     </View>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')} style={{ marginTop: 24, alignItems: 'center' }}>
+                    <Pressable onPress={() => navigation.navigate('Register')} style={({ pressed }) => ({ marginTop: 24, alignItems: 'center', opacity: pressed ? 0.6 : 1 })}>
                         <Text style={{ color: theme.textSecondary, fontSize: 14 }}>
                             New patient? <Text style={{ color: theme.primary, fontWeight: '700' }}>Create an account</Text>
                         </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>
@@ -266,9 +270,9 @@ export function RegisterScreen({ navigation }) {
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
                 >
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 24, marginTop: 8 }}>
+                    <Pressable onPress={() => navigation.goBack()} style={({ pressed }) => ({ marginBottom: 24, marginTop: 8, opacity: pressed ? 0.6 : 1 })}>
                         <Ionicons name="arrow-back" size={24} color={theme.text} />
-                    </TouchableOpacity>
+                    </Pressable>
 
                     <LogoSection theme={theme} />
 
@@ -327,9 +331,9 @@ export function RegisterScreen({ navigation }) {
                             success={fieldSuccess('password') && strength.score >= 3}
                             hint={!errors.password && !touched.password ? 'Use uppercase, numbers & symbols for a stronger password' : undefined}
                             rightElement={
-                                <TouchableOpacity onPress={() => setShowPw(p => !p)} style={{ padding: 4 }}>
+                                <Pressable onPress={() => setShowPw(p => !p)} style={({ pressed }) => ({ padding: 4, opacity: pressed ? 0.6 : 1 })}>
                                     <Ionicons name={showPw ? 'eye-off-outline' : 'eye-outline'} size={20} color={theme.textMuted} />
-                                </TouchableOpacity>
+                                </Pressable>
                             }
                         />
                         {/* Password strength bar (only show once user starts typing) */}
@@ -346,20 +350,20 @@ export function RegisterScreen({ navigation }) {
                             error={errors.confirmPassword}
                             success={fieldSuccess('confirmPassword')}
                             rightElement={
-                                <TouchableOpacity onPress={() => setShowConfirm(p => !p)} style={{ padding: 4 }}>
+                                <Pressable onPress={() => setShowConfirm(p => !p)} style={({ pressed }) => ({ padding: 4, opacity: pressed ? 0.6 : 1 })}>
                                     <Ionicons name={showConfirm ? 'eye-off-outline' : 'eye-outline'} size={20} color={theme.textMuted} />
-                                </TouchableOpacity>
+                                </Pressable>
                             }
                         />
 
                         <Button title="Create Account" onPress={handleRegister} loading={loading} icon="person-add-outline" style={{ marginTop: 4 }} />
                     </View>
 
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginTop: 24, alignItems: 'center' }}>
+                    <Pressable onPress={() => navigation.goBack()} style={({ pressed }) => ({ marginTop: 24, alignItems: 'center', opacity: pressed ? 0.6 : 1 })}>
                         <Text style={{ color: theme.textSecondary, fontSize: 14 }}>
                             Already have an account? <Text style={{ color: theme.primary, fontWeight: '700' }}>Sign In</Text>
                         </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>

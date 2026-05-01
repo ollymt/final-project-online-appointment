@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-    View, Text, FlatList, TouchableOpacity, Alert, TextInput,
+    View, Text, FlatList, Pressable, Alert, TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -68,16 +68,17 @@ export default function AppointmentsScreen({ navigation }) {
                         <Text style={{ color: theme.text, fontSize: 22, fontWeight: '900', letterSpacing: -0.5 }}>
                             {isDoctor ? 'All Appointments' : 'My Appointments'}
                         </Text>
-                        <TouchableOpacity
+                        <Pressable
                             onPress={() => navigation.navigate('NewAppointment')}
-                            style={{
+                            style={({ pressed }) => ({
                                 backgroundColor: theme.primary,
                                 width: 38, height: 38, borderRadius: 12,
                                 alignItems: 'center', justifyContent: 'center',
-                            }}
+                                opacity: pressed ? 0.75 : 1,
+                            })}
                         >
                             <Ionicons name="add" size={22} color="#fff" />
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
 
                     {/* Search */}
@@ -96,9 +97,9 @@ export default function AppointmentsScreen({ navigation }) {
                             onChangeText={setSearch}
                         />
                         {search.length > 0 && (
-                            <TouchableOpacity onPress={() => setSearch('')}>
+                            <Pressable onPress={() => setSearch('')} style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}>
                                 <Ionicons name="close-circle" size={18} color={theme.textMuted} />
-                            </TouchableOpacity>
+                            </Pressable>
                         )}
                     </View>
 
@@ -109,15 +110,16 @@ export default function AppointmentsScreen({ navigation }) {
                         keyExtractor={i => i}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => (
-                            <TouchableOpacity
+                            <Pressable
                                 onPress={() => setFilter(item)}
-                                style={{
+                                style={({ pressed }) => ({
                                     paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20,
                                     marginRight: 8,
                                     backgroundColor: filter === item ? theme.primary : theme.bgInput,
                                     borderWidth: 1,
                                     borderColor: filter === item ? theme.primary : theme.border,
-                                }}
+                                    opacity: pressed ? 0.75 : 1,
+                                })}
                             >
                                 <Text style={{
                                     color: filter === item ? '#fff' : theme.textSecondary,
@@ -125,7 +127,7 @@ export default function AppointmentsScreen({ navigation }) {
                                 }}>
                                     {item}
                                 </Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         )}
                     />
                 </View>

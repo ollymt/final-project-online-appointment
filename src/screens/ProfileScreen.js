@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Alert, Switch } from 'react-native';
+import { View, Text, ScrollView, Pressable, Alert, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -10,13 +10,13 @@ import { Card, Avatar, Divider } from '../components/UI';
 
 function SettingRow({ icon, label, sublabel, onPress, rightElement, color, theme }) {
     return (
-        <TouchableOpacity
+        <Pressable
             onPress={onPress}
-            activeOpacity={onPress ? 0.7 : 1}
-            style={{
+            style={({ pressed }) => ({
                 flexDirection: 'row', alignItems: 'center',
                 paddingVertical: 14, paddingHorizontal: 16,
-            }}
+                opacity: onPress && pressed ? 0.7 : 1,
+            })}
         >
             <View style={{
                 width: 36, height: 36, borderRadius: 10,
@@ -31,7 +31,7 @@ function SettingRow({ icon, label, sublabel, onPress, rightElement, color, theme
                 {sublabel && <Text style={{ color: theme.textMuted, fontSize: 12, marginTop: 1 }}>{sublabel}</Text>}
             </View>
             {rightElement || (onPress && <Ionicons name="chevron-forward" size={16} color={theme.textMuted} />)}
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 

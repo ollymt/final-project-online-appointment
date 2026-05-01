@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -37,10 +37,9 @@ export default function AppointmentCard({ appointment, onPress, onEdit, onDelete
     const icon = SERVICE_ICONS[appointment.service] || SERVICE_ICONS['Other'];
 
     return (
-        <TouchableOpacity
-            activeOpacity={0.85}
+        <Pressable
             onPress={onPress}
-            style={{
+            style={({ pressed }) => ({
                 backgroundColor: theme.bgCard,
                 borderRadius: 16,
                 marginBottom: 12,
@@ -52,7 +51,8 @@ export default function AppointmentCard({ appointment, onPress, onEdit, onDelete
                 shadowOpacity: 0.06,
                 shadowRadius: 8,
                 elevation: 2,
-            }}
+                opacity: pressed ? 0.85 : 1,
+            })}
         >
             {/* Top color bar based on status */}
             <View style={{
@@ -119,25 +119,31 @@ export default function AppointmentCard({ appointment, onPress, onEdit, onDelete
                     paddingVertical: 8,
                 }}>
                     {onEdit && (
-                        <TouchableOpacity
+                        <Pressable
                             onPress={onEdit}
-                            style={{ flexDirection: 'row', alignItems: 'center', marginRight: 20 }}
+                            style={({ pressed }) => ({
+                                flexDirection: 'row', alignItems: 'center',
+                                marginRight: 20, opacity: pressed ? 0.6 : 1,
+                            })}
                         >
                             <Ionicons name="pencil-outline" size={15} color={theme.primary} style={{ marginRight: 4 }} />
                             <Text style={{ color: theme.primary, fontSize: 13, fontWeight: '600' }}>Edit</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     )}
                     {onDelete && (
-                        <TouchableOpacity
+                        <Pressable
                             onPress={onDelete}
-                            style={{ flexDirection: 'row', alignItems: 'center' }}
+                            style={({ pressed }) => ({
+                                flexDirection: 'row', alignItems: 'center',
+                                opacity: pressed ? 0.6 : 1,
+                            })}
                         >
                             <Ionicons name="trash-outline" size={15} color={theme.danger} style={{ marginRight: 4 }} />
                             <Text style={{ color: theme.danger, fontSize: 13, fontWeight: '600' }}>Cancel</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     )}
                 </View>
             )}
-        </TouchableOpacity>
+        </Pressable>
     );
 }

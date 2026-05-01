@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import {
-    View, Text, TouchableOpacity, TextInput,
+    View, Text, Pressable, TextInput,
     ActivityIndicator, Platform,
 } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
@@ -33,13 +33,13 @@ export function Button({ title, onPress, variant = 'primary', loading, disabled,
     const border = isOutline ? theme.primary : 'transparent';
 
     return (
-        <TouchableOpacity
-            onPress={onPress} disabled={disabled || loading} activeOpacity={0.75}
-            style={[{
+        <Pressable
+            onPress={onPress} disabled={disabled || loading}
+            style={({ pressed }) => [{
                 backgroundColor: bg, borderRadius: 12, paddingVertical: 14,
                 paddingHorizontal: 20, alignItems: 'center', flexDirection: 'row',
                 justifyContent: 'center', borderWidth: isOutline ? 1.5 : 0,
-                borderColor: border, opacity: disabled ? 0.5 : 1,
+                borderColor: border, opacity: disabled ? 0.5 : pressed ? 0.75 : 1,
             }, style]}
         >
             {loading ? <ActivityIndicator color={color} size="small" /> : (
@@ -48,7 +48,7 @@ export function Button({ title, onPress, variant = 'primary', loading, disabled,
                     <Text style={{ color, fontWeight: '700', fontSize: 15, letterSpacing: 0.3 }}>{title}</Text>
                 </>
             )}
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 
@@ -194,9 +194,9 @@ export function SectionHeader({ title, action, onAction }) {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, marginTop: 4 }}>
             <Text style={{ color: theme.text, fontSize: 17, fontWeight: '800', letterSpacing: -0.3 }}>{title}</Text>
             {action && (
-                <TouchableOpacity onPress={onAction}>
+                <Pressable onPress={onAction} style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}>
                     <Text style={{ color: theme.primary, fontSize: 14, fontWeight: '600' }}>{action}</Text>
-                </TouchableOpacity>
+                </Pressable>
             )}
         </View>
     );

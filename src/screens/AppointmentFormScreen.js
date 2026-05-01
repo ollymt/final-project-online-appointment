@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
-    View, Text, ScrollView, TouchableOpacity,
+    View, Text, ScrollView, Pressable,
     KeyboardAvoidingView, Platform, Alert, BackHandler,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -48,15 +48,14 @@ function SelectorList({ title, required, options, selected, onSelect, renderItem
                 {options.map((opt, i) => {
                     const isSelected = renderItem ? selected?.id === opt.id : selected === opt;
                     return (
-                        <TouchableOpacity
+                        <Pressable
                             key={renderItem ? opt.id : opt} onPress={() => onSelect(opt)}
-                            activeOpacity={0.7}
-                            style={{
+                            style={({ pressed }) => ({
                                 flexDirection: 'row', alignItems: 'center',
                                 paddingHorizontal: 14, paddingVertical: 13,
-                                backgroundColor: isSelected ? theme.primary + '12' : 'transparent',
+                                backgroundColor: isSelected ? theme.primary + '12' : pressed ? theme.bgInput : 'transparent',
                                 borderTopWidth: i > 0 ? 1 : 0, borderColor: theme.border,
-                            }}
+                            })}
                         >
                             <View style={{
                                 width: 20, height: 20, borderRadius: 10,
@@ -71,7 +70,7 @@ function SelectorList({ title, required, options, selected, onSelect, renderItem
                                 </Text>
                             )}
                             {isSelected && <Ionicons name="checkmark" size={16} color={theme.primary} style={{ marginLeft: 'auto' }} />}
-                        </TouchableOpacity>
+                        </Pressable>
                     );
                 })}
             </View>
@@ -100,15 +99,15 @@ function DatePicker({ selected, onSelect, error, theme }) {
                     const isSel = selected === dateStr;
                     const isWeekend = [0, 6].includes(date.getDay());
                     return (
-                        <TouchableOpacity
-                            key={i} onPress={() => onSelect(dateStr)} activeOpacity={0.75}
-                            style={{
+                        <Pressable
+                            key={i} onPress={() => onSelect(dateStr)}
+                            style={({ pressed }) => ({
                                 width: 58, height: 76, borderRadius: 14,
                                 alignItems: 'center', justifyContent: 'center',
                                 backgroundColor: isSel ? theme.primary : isWeekend ? theme.bgInput + 'aa' : theme.bgCard,
                                 borderWidth: 1.5, borderColor: isSel ? theme.primary : error && !selected ? theme.danger : theme.border,
-                                opacity: isWeekend ? 0.55 : 1,
-                            }}
+                                opacity: isWeekend ? 0.55 : pressed ? 0.75 : 1,
+                            })}
                         >
                             <Text style={{ color: isSel ? 'rgba(255,255,255,0.75)' : theme.textMuted, fontSize: 10, fontWeight: '700', textTransform: 'uppercase' }}>
                                 {format(date, 'EEE')}
@@ -119,7 +118,7 @@ function DatePicker({ selected, onSelect, error, theme }) {
                             <Text style={{ color: isSel ? 'rgba(255,255,255,0.65)' : theme.textMuted, fontSize: 9 }}>
                                 {format(date, 'MMM')}
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     );
                 })}
             </ScrollView>
@@ -165,16 +164,15 @@ function TimePicker({ selected, onSelect, bookedTimes = [], error, theme }) {
                     const isSel = selected === t;
                     const isBooked = bookedTimes.includes(t);
                     return (
-                        <TouchableOpacity
+                        <Pressable
                             key={t} onPress={() => !isBooked && onSelect(t)}
-                            activeOpacity={isBooked ? 1 : 0.75}
-                            style={{
+                            style={({ pressed }) => ({
                                 paddingHorizontal: 14, paddingVertical: 9, borderRadius: 10,
                                 backgroundColor: isSel ? theme.primary : isBooked ? theme.bgInput : theme.bgCard,
                                 borderWidth: 1.5,
                                 borderColor: isSel ? theme.primary : isBooked ? theme.border : error && !selected ? theme.danger : theme.border,
-                                opacity: isBooked ? 0.45 : 1,
-                            }}
+                                opacity: isBooked ? 0.45 : pressed ? 0.75 : 1,
+                            })}
                         >
                             <Text style={{ color: isSel ? '#fff' : isBooked ? theme.textMuted : theme.text, fontSize: 13, fontWeight: '600' }}>
                                 {fmt(t)}
@@ -182,7 +180,7 @@ function TimePicker({ selected, onSelect, bookedTimes = [], error, theme }) {
                             {isBooked && (
                                 <Text style={{ color: theme.textMuted, fontSize: 9, textAlign: 'center', marginTop: 1 }}>Taken</Text>
                             )}
-                        </TouchableOpacity>
+                        </Pressable>
                     );
                 })}
             </View>
@@ -362,9 +360,9 @@ export default function AppointmentFormScreen({ route, navigation }) {
                 >
                     {/* Header */}
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24 }}>
-                        <TouchableOpacity onPress={handleBack} style={{ marginRight: 12 }}>
+                        <Pressable onPress={handleBack} style={({ pressed }) => ({ marginRight: 12, opacity: pressed ? 0.6 : 1 })}>
                             <Ionicons name="arrow-back" size={24} color={theme.text} />
-                        </TouchableOpacity>
+                        </Pressable>
                         <Text style={{ color: theme.text, fontSize: 20, fontWeight: '900', letterSpacing: -0.3 }}>
                             {isEditing ? 'Edit Appointment' : 'Book Appointment'}
                         </Text>
