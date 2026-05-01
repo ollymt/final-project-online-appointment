@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    View, Text, ScrollView, Pressable,
-} from 'react-native';
+import { View, Text, ScrollView, Pressable,} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -135,7 +133,7 @@ export default function HomeScreen({ navigation }) {
                 <View style={{ marginBottom: 24 }}>
                     <Text style={{ color: theme.textSecondary, fontSize: 14 }}>{greeting()},</Text>
                     <Text style={{ color: theme.text, fontSize: 26, fontWeight: '900', letterSpacing: -0.5 }}>
-                        {user?.name?.split(' ')[0]} 👋
+                        {isDoctor ? `Dr. ${user?.name?.split(' ').slice(-1)[0]}` : user?.name?.split(' ')[0]} 👋
                     </Text>
                     {isDoctor && (
                         <View style={{
